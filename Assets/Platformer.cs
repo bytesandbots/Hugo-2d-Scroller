@@ -10,6 +10,7 @@ public class Platformer : MonoBehaviour
 
     public float speed;
     public float jumpForce;
+    public Animator anim;
 
     public float fallMultiplier = 2.5f;
     public float lowJumpMultiplier = 2f;
@@ -48,7 +49,21 @@ public class Platformer : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         //float x = 1;
         float moveBy = x * speed;
+        if (x > 0) {
+            GetComponent<SpriteRenderer>().flipX = false;
+        }
+        if(x < 0)
+        {
 
+            GetComponent<SpriteRenderer>().flipX = true;
+        }
+        if (x != 0)
+        {
+            anim.SetBool("moving", true);
+        }
+        else {
+            anim.SetBool("moving", false);
+        }
         rb.velocity = new Vector2(moveBy, rb.velocity.y);
     }
 
