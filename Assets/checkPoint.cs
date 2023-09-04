@@ -21,6 +21,7 @@ public class checkPoint : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player") {
             CheckPoint.position = transform.position;
+            collision.gameObject.GetComponent<Platformer>().defaultAdditionalJumps =  2;
         }
     }
 }
