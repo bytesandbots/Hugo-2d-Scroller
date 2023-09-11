@@ -10,9 +10,11 @@ public class Platformer : MonoBehaviour
 
     public float speed;
     public float jumpForce;
+ 
     public Animator anim;
 
     public float fallMultiplier = 2.5f;
+    private float oldJumpForce;
     public float lowJumpMultiplier = 2f;
 
     public bool isGrounded = false;
@@ -25,13 +27,13 @@ public class Platformer : MonoBehaviour
 
     public int defaultAdditionalJumps = 1;
     int additionalJumps;
-
+    public jetpack jp;
 
 
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-
+        oldJumpForce = jumpForce;
         additionalJumps = defaultAdditionalJumps;
     }
 
@@ -49,10 +51,11 @@ public class Platformer : MonoBehaviour
         float x = Input.GetAxisRaw("Horizontal");
         //float x = 1;
         float moveBy = x * speed;
-        if (x > 0) {
+        if (x > 0)
+        {
             GetComponent<SpriteRenderer>().flipX = false;
         }
-        if(x < 0)
+        if (x < 0)
         {
 
             GetComponent<SpriteRenderer>().flipX = true;
@@ -61,7 +64,8 @@ public class Platformer : MonoBehaviour
         {
             anim.SetBool("moving", true);
         }
-        else {
+        else
+        {
             anim.SetBool("moving", false);
         }
         rb.velocity = new Vector2(moveBy, rb.velocity.y);
@@ -73,6 +77,14 @@ public class Platformer : MonoBehaviour
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpForce);
             additionalJumps--;
+            if (jp.ready)
+            {
+                jp.useFuel();
+            }
+            else {
+                jumpForce = oldJumpForce;
+            }
+
         }
     }
 
@@ -99,7 +111,7 @@ public class Platformer : MonoBehaviour
             else if (rb.velocity.y > 0)
             {
                 rb.velocity += Vector2.up * Physics2D.gravity * (fallMultiplier - 1) * Time.deltaTime;
-                
+
             }
         }
     }
@@ -112,6 +124,7 @@ public class Platformer : MonoBehaviour
         {
             isGrounded = true;
             additionalJumps = defaultAdditionalJumps;
+         
         }
         else
         {
