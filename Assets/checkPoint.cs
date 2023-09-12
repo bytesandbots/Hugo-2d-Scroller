@@ -5,6 +5,7 @@ using UnityEngine;
 public class checkPoint : MonoBehaviour
 {
     Transform CheckPoint;
+    public int jumps = 2;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,7 +22,7 @@ public class checkPoint : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player") {
             CheckPoint.position = transform.position;
-            collision.gameObject.GetComponent<Platformer>().defaultAdditionalJumps =  2;
+            collision.gameObject.GetComponent<Platformer>().defaultAdditionalJumps =  jumps;
         }
     }
 }
